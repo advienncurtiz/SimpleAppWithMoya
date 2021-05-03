@@ -14,7 +14,14 @@ enum FakeAPI {
 
 extension FakeAPI: TargetType {
     var baseURL: URL {
-        let baseUrl = "http://localhost:3000"
+        debugPrint("Base url use \(ProcessInfo.processInfo.environment["base_url"])")
+        if let env = ProcessInfo.processInfo.environment["base_url"], env == "localServer" {
+            let baseUrl = "http://127.0.0.1:3000" //local
+            return URL.init(string: baseUrl)!
+        }
+        
+        
+        let baseUrl = "https://my-json-server.typicode.com/advienncurtiz/FakeJSONPlaceholder" //json server
         return URL.init(string: baseUrl)!
     }
     
