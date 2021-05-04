@@ -7,6 +7,7 @@
 
 import Foundation
 import Moya
+import Alamofire
 
 enum FakeAPI {
     case getList
@@ -58,7 +59,11 @@ struct FakeWorker: FakeWorkerType {
     private let provider: MoyaProvider<FakeAPI>
     
     init() {
-        self.provider = MoyaProvider<FakeAPI>()
+        let interceptor = APIRequestRetrier()
+        let session = Moya.Session(interceptor: interceptor)
+        
+        
+        self.provider = MoyaProvider<FakeAPI>(session: session)
     }
     
     
@@ -77,7 +82,10 @@ struct FakeWorker: FakeWorkerType {
                 completion(.failure(error))
             }
         }
+        
+        
     }
+    
     
     
 }
@@ -101,3 +109,13 @@ struct GameItem: Decodable {
     }
     
 }
+extension DataRequest {
+    
+}
+
+// MARK: - Alamofire response handlers
+
+extension DataRequest {
+
+}
+
